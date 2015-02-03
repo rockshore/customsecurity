@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - @localhost" uuid="a409405d-2574-4800-ba03-2a7f851ae25b">
+    <database-info product="MySQL" version="5.6.19" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
+    <schema name="" catalog="security"/>
+    <schema name="" catalog="securityLite"/>
+    <table name="Menu" schema="" catalog="security" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="path" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="parent_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_3bjn0j95nrnbkm4idv8ibf7s1" columns="parent_id" ref-table="Menu" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_3bjn0j95nrnbkm4idv8ibf7s1" table="Menu" schema="" catalog="security" columns="parent_id"/>
+      <index name="FK_3bjn0j95nrnbkm4idv8ibf7s1" unique="false" columns="parent_id"/>
+    </table>
+    <table name="acl_class" schema="" catalog="security" type="TABLE">
+      <column name="id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="class" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="acl_object_identity_ibfk_1" table="acl_object_identity" schema="" catalog="security" columns="object_id_class"/>
+      <index name="class" unique="true" columns="class"/>
+    </table>
+    <table name="acl_entry" schema="" catalog="security" type="TABLE">
+      <column name="id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="acl_object_identity" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="ace_order" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="sid" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="mask" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="granting" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="audit_success" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="audit_failure" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="acl_entry_ibfk_1" columns="acl_object_identity" ref-table="acl_object_identity" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="acl_entry_ibfk_2" columns="sid" ref-table="acl_sid" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="acl_entry_idx_1" unique="true" columns="acl_object_identity,ace_order"/>
+    </table>
+    <table name="acl_object_identity" schema="" catalog="security" type="TABLE">
+      <column name="id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="object_id_class" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="object_id_identity" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="parent_object" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="owner_sid" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="entries_inheriting" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="acl_object_identity_ibfk_1" columns="object_id_class" ref-table="acl_class" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="acl_object_identity_ibfk_2" columns="parent_object" ref-table="acl_object_identity" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="acl_object_identity_ibfk_3" columns="owner_sid" ref-table="acl_sid" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="acl_entry_ibfk_1" table="acl_entry" schema="" catalog="security" columns="acl_object_identity"/>
+      <exported-key name="acl_object_identity_ibfk_2" table="acl_object_identity" schema="" catalog="security" columns="parent_object"/>
+      <index name="acl_object_identity_idx_1" unique="true" columns="object_id_class,object_id_identity"/>
+    </table>
+    <table name="acl_sid" schema="" catalog="security" type="TABLE">
+      <column name="id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="principal" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="sid" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="acl_entry_ibfk_2" table="acl_entry" schema="" catalog="security" columns="sid"/>
+      <exported-key name="acl_object_identity_ibfk_3" table="acl_object_identity" schema="" catalog="security" columns="owner_sid"/>
+      <index name="acl_sid_idx_1" unique="true" columns="sid,principal"/>
+    </table>
+    <table name="authorities" schema="" catalog="security" type="TABLE">
+      <column name="username" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="authority" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <foreign-key name="authorities_ibfk_1" columns="username" ref-table="users" ref-schema="" ref-catalog="security" ref-columns="username" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="authorities_idx_1" unique="true" columns="username,authority"/>
+    </table>
+    <table name="group_authorities" schema="" catalog="security" type="TABLE">
+      <column name="group_id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="authority" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <foreign-key name="group_authorities_ibfk_1" columns="group_id" ref-table="groups" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="group_members" schema="" catalog="security" type="TABLE">
+      <column name="id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="username" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="group_id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="group_members_ibfk_1" columns="group_id" ref-table="groups" ref-schema="" ref-catalog="security" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="groups" schema="" catalog="security" type="TABLE">
+      <column name="id" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="group_name" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="group_authorities_ibfk_1" table="group_authorities" schema="" catalog="security" columns="group_id"/>
+      <exported-key name="group_members_ibfk_1" table="group_members" schema="" catalog="security" columns="group_id"/>
+    </table>
+    <table name="users" schema="" catalog="security" type="TABLE">
+      <column name="username" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="enabled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="username"/>
+      <exported-key name="authorities_ibfk_1" table="authorities" schema="" catalog="security" columns="username"/>
+    </table>
+  </data-source>
+</component>
